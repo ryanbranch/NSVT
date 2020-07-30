@@ -1,0 +1,9 @@
+# PyCharm
+/venv
+/.idea
+
+# Development
+/*.gif
+/*.avi
+/output/frames/*.jpg
+/output/frames/*.png
