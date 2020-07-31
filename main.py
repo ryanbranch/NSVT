@@ -1,3 +1,8 @@
+# TODO:
+#   A. Placeholder
+
+
+# Library Imports
 import random
 import timeit
 from timeit import default_timer
@@ -12,6 +17,10 @@ import tkinter
 from tkinter import ttk, CENTER, NW
 from functools import partial
 
+# Local Imports
+import user_input_handler
+
+# G L O B A L     V A R I A B L E S
 # TESTING CONTROLS
 DEFAULT_TEST_ITERATIONS = 5
 # FILE NAMES AND PATHS
@@ -42,6 +51,8 @@ class PhysicsEngine():
 
     def __init__(self, wrapper_):
         self.wrapper = wrapper_
+        self.playerX = 0
+        self.playerY = 0
 
 class GraphicsEngine():
 
@@ -122,6 +133,10 @@ class GraphicsEngine():
         #imageData += 32
         return imageData
 
+    def drawPlayer(self):
+        self.numpyImage[self.wrapper.pEngines[-1].playerY,
+                        self.wrapper.pEngines[-1].playerX] = [0, 255, 255]
+
 # Stores metadata for the app to reference (e.g. target width and height of the window)
 class AppInfo():
 
@@ -138,6 +153,8 @@ class App(tkinter.Tk):
         # MEMBER VARIABLE DEFINITIONS
         # References to external objects
         self.wrapper = wrapper_
+        # UserInputHandler instance
+        self.uih = user_input_handler.UserInputHandler(self.wrapper, self)
         # App Parameters
         self.msPerFrame = int(round(1000 / DEFAULT_FRAMERATE))
         self.animating = False
@@ -153,43 +170,18 @@ class App(tkinter.Tk):
         self.grid_columnconfigure(0, weight=1)
 
         # USER INPUT EVENT CONTROL
-        self.bind("<Button-1>", self.handleMouseClick)
-        self.bind("<Return>", self.handleKeyEnter)
-        self.bind("<space>", self.handleKeySpace)
-        self.bind("c", self.handleKeyC)
-        self.bind("d", self.handleKeyD)
+        self.bind("<Button-1>", self.uih.handleMouseClick)
+        self.bind("<Return>", self.uih.handleKeyEnter)
+        self.bind("<space>", self.uih.handleKeySpace)
+        self.bind("c", self.uih.handleKeyC)
+        self.bind("d", self.uih.handleKeyD)
 
 
         self.defineGraphics()
         self.advance()
 
-    # Mouse Left Click - Advances the state
-    def handleMouseClick(self, event):
-        print(event.x, event.y)
-        self.wrapper.gEngines[-1].randomizeRandomPixel()
-        self.advance()
 
-    # Keyboard "C" Press - Clears/Resets the image
-    def handleKeyC(self, event):
-        if self.animating:
-            self.stopAnimating()
-        self.wrapper.gEngines[-1].numpyImage = self.wrapper.gEngines[-1].clearImageNumba(self.wrapper.gEngines[-1].numpyImage)
-        self.advance()
 
-    # Keyboard "D" Press - Advances the state
-    def handleKeyD(self, event):
-        if self.animating:
-            self.stopAnimating()
-        self.advance()
-
-    # Keyboard "ENTER" Press - Begins the animation process
-    def handleKeyEnter(self, event):
-        if not self.animating:
-            self.startAnimating()
-
-    # Keyboard "SPACE" Press - Pauses the animation process
-    def handleKeySpace(self, event):
-        self.stopAnimating()
 
     def advance(self):
         # Updates the graphics
@@ -257,6 +249,7 @@ class App(tkinter.Tk):
     def computeNextFrame(self):
         # Compute a new frame to prepare for future display
         self.wrapper.gEngines[-1].numpyImage = self.wrapper.gEngines[-1].manipulateImageNumba(self.wrapper.gEngines[-1].numpyImage)
+        self.wrapper.gEngines[-1].drawPlayer()
         self.nextFrameComputed = True
 
 class Wrapper():
