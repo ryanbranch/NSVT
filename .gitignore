@@ -10,3 +10,4 @@ __pycache__/
 /*.avi
 /output/frames/*.jpg
 /output/frames/*.png
+/templates/
