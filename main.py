@@ -13,6 +13,7 @@ from numba import jit
 import tkinter
 from tkinter import ttk, CENTER, NW
 from functools import partial
+import pygame
 
 # Local Imports
 import user_input_handler
@@ -43,6 +44,13 @@ class AppInfo():
     def __init__(self, width_, height_):
         self.width = width_
         self.height = height_
+
+class PyGameApp():
+
+    def __init__(self, wrapper_):
+        # MEMBER VARIABLE DEFINITIONS
+        # References to external objects
+        self.wrapper = wrapper_
 
 class App(tkinter.Tk):
 
@@ -77,10 +85,9 @@ class App(tkinter.Tk):
         self.bind("d", self.uih.handleKeyD)
 
 
+        # MEMBER FUNCTION CALLS
         self.defineGraphics()
         self.advance()
-
-
 
 
     def advance(self):
@@ -159,15 +166,16 @@ class Wrapper():
         # MEMBER VARIABLE DECLARATION
         # AppInfo instance
         self.appInfo = AppInfo(APP_WIDTH, APP_HEIGHT)
-        # GraphicsEngine instances
+        # GraphicsEngine list
         self.gEngines = []
-        self.gEngines.append(graphics_engine.GraphicsEngine(self))
-        # PhysicsEngine instances
+        # PhysicsEngine list
         self.pEngines = []
-        self.pEngines.append(PhysicsEngine(self))
 
         # SETUP ACTIONS
-        # Placeholder
+        # Create a GraphicsEngine instance and a PhysicsEngine instance
+        self.gEngines.append(graphics_engine.GraphicsEngine(self))
+        self.pEngines.append(PhysicsEngine(self))
+
 
         # POST-SETUP ACTIONS
         # Create and run the Tkinter GUI instance
