@@ -11,3 +11,4 @@ __pycache__/
 /output/frames/*.jpg
 /output/frames/*.png
 /templates/
+/input/

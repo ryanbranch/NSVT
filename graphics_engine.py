@@ -16,8 +16,8 @@ import random
 
 class GraphicsEngine():
     # C L A S S      A T T R I B U T E S
-    DEFAULT_GRAPHICS_WIDTH = 100
-    DEFAULT_GRAPHICS_HEIGHT = 100
+    DEFAULT_GRAPHICS_WIDTH = 1000
+    DEFAULT_GRAPHICS_HEIGHT = 1000
     DEFAULT_NUMPY_DATATYPE = numpy.uint8
     NUM_COLOR_CHANNELS = 3
     OUTPUT_DIRECTORY = "output/"
