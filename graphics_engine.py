@@ -106,7 +106,21 @@ class GraphicsEngine():
         for y in range(dims[0]):
             for x in range(dims[1]):
                 imageData[y, x] += numpy.uint8(y + x)
-        #imageData += 32
+        return imageData
+
+    @staticmethod
+    @jit(nopython=True)
+    def manipulateImageNumba2(imageData):
+        dims = imageData.shape
+        for y in range(dims[0]):
+            for x in range(dims[1]):
+                imageData[y, x] += numpy.uint8(y + x)
+
+                tempInt1 = (y + x) % 256
+                if tempInt1 == 0:
+                    tempInt1 += 1
+                imageData[y, x] -= (numpy.uint8(y * x) % numpy.uint8(tempInt1))
+
         return imageData
 
     def drawPlayer(self):
