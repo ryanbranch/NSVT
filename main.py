@@ -31,6 +31,7 @@ from OpenGL.arrays import vbo
 import user_input_handler
 import graphics_engine
 import shape_generator
+import nsvt_geometry as geo
 
 # G L O B A L     V A R I A B L E S
 # TESTING CONTROLS
@@ -83,7 +84,9 @@ class OpenGLApp():
             moveY = random.randrange(-50, 50) / 10
             moveZ = random.randrange(-50, 50) / 10
             self.shapes.append(self.wrapper.shapeGen.generateCuboid(shapeX, shapeY, shapeZ))
-            self.shapes[-1].translate(moveX, moveY, moveZ)
+            #self.shapes[-1].translate(moveX, moveY, moveZ)
+            geo.translate(self.shapes[-1].vertices, moveX, moveY, moveZ)
+            geo.updateTriangleVertices(self.shapes[-1].vertices, self.shapes[-1].triangles, self.shapes[-1].triangleVertices)
 
 
 
