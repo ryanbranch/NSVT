@@ -12,3 +12,4 @@ __pycache__/
 /output/frames/*.png
 /templates/
 /input/
+/sandbox*
