@@ -15,4 +15,6 @@ NumPy Simulation and Visualization Toolkit
    * [Displaying Images with PyGame](https://pythonprogramming.net/displaying-images-pygame/) by Sentdex from [pythonprogramming.net](https://pythonprogramming.net/)
      * Used in initial development of the PyGameApp test class, beginning 2020/08/04
  * The [PyGame Documentation](https://www.pygame.org/docs)
+ * Joey de Vries' [LearnOpenGL](https://learnopengl.com/) online book
+ * The [PyOpenGL Documentation](http://pyopengl.sourceforge.net/documentation/index.html) on SourceForge
  
