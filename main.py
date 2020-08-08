@@ -21,18 +21,16 @@ import numpy
 from numba import jit
 import tkinter
 from tkinter import ttk, CENTER, NW
-from functools import partial
 import pygame
 from OpenGL.GL import *
 from OpenGL.GLU import *
 from OpenGL.arrays import vbo
 
-from ctypes import *
 
 # Local Imports
 import user_input_handler
 import graphics_engine
-import nsvt_config as config
+import shape_generator
 
 # G L O B A L     V A R I A B L E S
 # TESTING CONTROLS
@@ -58,139 +56,6 @@ class AppInfo():
     def __init__(self, width_, height_):
         self.width = width_
         self.height = height_
-
-
-class ShapeGenerator():
-
-    def __init__(self):
-        self.shapeCount = 0
-        print()
-
-    @staticmethod
-    def getCubeVertices():
-        return ((0, 0, 0),  # A
-                (1, 0, 0),  # B
-                (0, 1, 0),  # C
-                (0, 0, 1),  # D
-                (1, 1, 0),  # E
-                (1, 0, 1),  # F
-                (0, 1, 1),  # G
-                (1, 1, 1))  # H
-
-    @staticmethod
-    def getCubeEdges():
-        return ((0, 1),   # A to B
-                (0, 2),   # A to C
-                (0, 3),   # A to D
-                (1, 4),   # B to E
-                (1, 5),   # B to F
-                (2, 4),   # C to E
-                (2, 6),   # C to G
-                (3, 5),   # D to F
-                (3, 6),   # D to G
-                (4, 7),   # E to H
-                (5, 7),   # F to H
-                (6, 7))   # G to H
-
-    @staticmethod
-    def getCubeTriangles():
-        return((0, 1, 4),   # A, B, E
-               (0, 1, 5),   # A, B, F
-               (0, 2, 4),   # A, C, E
-               (0, 2, 6),   # A, C, G
-               (0, 3, 5),   # A, D, F
-               (0, 3, 6),   # A, D, G
-               (1, 4, 7),   # B, E, H
-               (1, 5, 7),   # B, F, H
-               (2, 4, 7),   # C, E, H
-               (2, 6, 7),   # C, G, H
-               (3, 5, 7),   # D, F, H
-               (3, 6, 7))   # D, G, H
-
-    def generateCuboid(self, dimX, dimY, dimZ):
-        # Creates an empty Shape3D object
-        shape = Shape3D()
-        # Initializes the vertex array as a unit cube
-        vertexArray = numpy.asarray(self.getCubeVertices(), dtype=config.SHAPE3D_VERTICES_NUMPY_DTYPE)
-        # Scales the vertex array by (dimX, dimY, dimZ) via matrix multiplication
-        vertexArray[:, 0] *= dimX
-        vertexArray[:, 1] *= dimY
-        vertexArray[:, 2] *= dimZ
-        # Calls the set() methods for the Shape's vertices/edges/triangles
-        shape.setVertices(vertexArray)
-        shape.setEdges(numpy.asarray(self.getCubeEdges(), dtype=config.SHAPE3D_EDGES_NUMPY_DTYPE))
-        shape.setTriangles(numpy.asarray(self.getCubeTriangles(), dtype=config.SHAPE3D_TRIANGLES_NUMPY_DTYPE))
-        shape.generateTriangleVertices()
-        # Increments self.shapeCount and returns the new Shape3D object
-        self.shapeCount += 1
-        return shape
-
-
-# Abstraction of any 3-dimensional shape via its vertices and their connections
-# INVARIANTS:
-#   A. vertices_ must be a list of X,Y,Z coordinates. It will be converted to a 2D NumPy array
-#   B. edges_ must be a list of vertex pairs. It will be converted to a 2D NumPy array
-class Shape3D():
-    def __init__(self):
-        self.vertices = None
-        self.edges = None
-        self.triangles = None
-        self.triangleVertices = None
-        self.hasVertices = False
-        self.hasEdges = False
-        self.hasTriangles = False
-        self.hasTriangleVertices = False
-
-
-    def setVertices(self, vertices_):
-        # Invariant Checks (NOT YET IMPLEMENTED)
-        invariantFail = False
-        if invariantFail:
-            print("ERROR: Failed invariant checks in Shape3D.setVertices()")
-            return False
-
-        self.vertices = numpy.asarray(vertices_, dtype=config.SHAPE3D_VERTICES_NUMPY_DTYPE)
-        self.hasVertices = True
-
-
-    def setEdges(self, edges_):
-        # Invariant Checks (NOT YET IMPLEMENTED)
-        invariantFail = False
-        if invariantFail:
-            print("ERROR: Failed invariant checks in Shape3D.setEdges()")
-            return False
-
-        self.edges = numpy.asarray(edges_, dtype=config.SHAPE3D_EDGES_NUMPY_DTYPE)
-        self.hasEdges = True
-
-
-    def setTriangles(self, triangles_):
-        # Invariant Checks (NOT YET IMPLEMENTED)
-        invariantFail = False
-        if invariantFail:
-            print("ERROR: Failed invariant checks in Shape3D.setTriangles()")
-            return False
-
-        self.triangles = numpy.asarray(triangles_, dtype=config.SHAPE3D_TRIANGLES_NUMPY_DTYPE)
-        self.hasTriangles = True
-
-
-    def generateTriangleVertices(self):
-        # Invariant Checks (NOT YET IMPLEMENTED)
-        #  - Must have already called self.setTriangles
-        invariantFail = False
-        if invariantFail:
-            print("ERROR: Failed invariant checks in Shape3D.setTriangles()")
-            return False
-
-        self.triangleVertices = numpy.ones((self.triangles.shape[0], self.triangles.shape[1] * 3),
-                                       dtype=config.SHAPE3D_VERTICES_NUMPY_DTYPE)
-        for t, triangle in enumerate(self.triangles):
-            for v, vertex in enumerate(triangle):
-                for i in range(3):
-                    self.triangleVertices[t, 3 * v + i] = self.vertices[int(vertex)][i]
-        self.hasTriangleVertices = True
-        #print(self.triangleVertices)
 
 
 class OpenGLApp():
@@ -506,7 +371,7 @@ class Wrapper():
         # AppInfo instance
         self.appInfo = AppInfo(APP_WIDTH, APP_HEIGHT)
         # ShapeGenerator instance
-        self.shapeGen = ShapeGenerator()
+        self.shapeGen = shape_generator.ShapeGenerator()
         # GraphicsEngine list
         self.gEngines = []
         # PhysicsEngine list
