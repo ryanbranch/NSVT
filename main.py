@@ -75,7 +75,17 @@ class OpenGLApp():
 
         # Shapes
         self.shapes = []
-        self.shapes.append(self.wrapper.shapeGen.generateCuboid(1.5, 1.5, 1.5))
+        for i in range(100):
+            shapeX = random.randrange(5, 16) / 20
+            shapeY = random.randrange(5, 16) / 20
+            shapeZ = random.randrange(5, 16) / 20
+            moveX = random.randrange(-50, 50) / 10
+            moveY = random.randrange(-50, 50) / 10
+            moveZ = random.randrange(-50, 50) / 10
+            self.shapes.append(self.wrapper.shapeGen.generateCuboid(shapeX, shapeY, shapeZ))
+            self.shapes[-1].translate(moveX, moveY, moveZ)
+
+
 
         # PyOpenGL
         # SETUP OPERATIONS
@@ -92,8 +102,10 @@ class OpenGLApp():
         # SHADER OPERATIONS
         # (placeholder)
         # VBO OPERATIONS
-        self.vbo = vbo.VBO(self.shapes[-1].vertices)
-        self.vbo2 = vbo.VBO(self.shapes[-1].triangleVertices)
+        self.allVertices = numpy.concatenate([shape.vertices for shape in self.shapes], 0)
+        self.allTriangleVertices = numpy.concatenate([shape.triangleVertices for shape in self.shapes], 0)
+        self.vbo = vbo.VBO(self.allVertices)
+        self.vbo2 = vbo.VBO(self.allTriangleVertices)
 
         # App Control
         self.frameTime = default_timer()
@@ -121,7 +133,7 @@ class OpenGLApp():
         quit()
 
     def drawGraphicsOpenGL(self):
-        glRotatef(3, 1, 2, 3)  # 3-degree rotation around the unit vector
+        glRotatef(0.3, 1, 2, 3)  # 3-degree rotation around the unit vector
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)  # Clear the current display
 
         tempCounter = 0
@@ -131,9 +143,8 @@ class OpenGLApp():
             self.vbo.bind()
             try:
                 glEnableClientState(GL_VERTEX_ARRAY);
-                # glVertexPointerf(self.vbo)
                 glVertexPointer(3, GL_FLOAT, 0, self.vbo)
-                glDrawArrays(GL_POINTS, 0, 8)
+                glDrawArrays(GL_POINTS, 0, len(self.allVertices))
             finally:
                 self.vbo.unbind()
                 glDisableClientState(GL_VERTEX_ARRAY);
@@ -142,9 +153,8 @@ class OpenGLApp():
             self.vbo2.bind()
             try:
                 glEnableClientState(GL_VERTEX_ARRAY);
-                # glVertexPointerf(self.vbo2)
                 glVertexPointer(3, GL_FLOAT, 0, self.vbo2)
-                glDrawArrays(GL_TRIANGLES, 0, 36)
+                glDrawArrays(GL_TRIANGLES, 0, len(self.allTriangleVertices) * 3)
             finally:
                 self.vbo2.unbind()
                 glDisableClientState(GL_VERTEX_ARRAY);
