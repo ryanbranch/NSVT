@@ -77,15 +77,20 @@ class OpenGLApp():
         # Shapes
         self.shapes = []
         for i in range(100):
+            print("ONE ITERATION.")
             shapeX = random.randrange(5, 16) / 20
             shapeY = random.randrange(5, 16) / 20
             shapeZ = random.randrange(5, 16) / 20
             moveX = random.randrange(-50, 50) / 10
             moveY = random.randrange(-50, 50) / 10
             moveZ = random.randrange(-50, 50) / 10
+            rotateX = random.randrange(-90, 91)
+            rotateY = random.randrange(-90, 91)
+            rotateZ = random.randrange(-90, 91)
             self.shapes.append(self.wrapper.shapeGen.generateCuboid(shapeX, shapeY, shapeZ))
-            #self.shapes[-1].translate(moveX, moveY, moveZ)
-            geo.translate(self.shapes[-1].vertices, moveX, moveY, moveZ)
+            geo.translateVertices(self.shapes[-1].vertices, moveX, moveY, moveZ)
+            #self.shapes[-1].vertices = geo.rotateVertices(self.shapes[-1].vertices, rotateX, rotateY, rotateZ)
+            #geo.rotateVertices(self.shapes[-1].vertices, rotateX, rotateY, rotateZ)
             geo.updateTriangleVertices(self.shapes[-1].vertices, self.shapes[-1].triangles, self.shapes[-1].triangleVertices)
 
 
@@ -99,7 +104,7 @@ class OpenGLApp():
         glPointSize(5)
         # Set camera perspective
         gluPerspective(25, (self.display_width / self.display_height), 0.1, 50.0)
-        # Translate and rotate to initial positon
+        # Translate and rotate to initial position
         glTranslatef(-0.5, -0.5, -10.0)
         glRotatef(20, 0, 0, 0)
         # SHADER OPERATIONS
@@ -379,6 +384,8 @@ class App(tkinter.Tk):
 class Wrapper():
 
     def __init__(self):
+        # RANDOM SEEDING
+        random.seed(333)
 
         # MEMBER VARIABLE DECLARATION
         # AppInfo instance

@@ -17,7 +17,7 @@ class ShapeGenerator():
 
     @staticmethod
     @jit(nopython=True)
-    def getCubeVertices():
+    def generateCuboidVertices():
         return numpy.array([[0, 0, 0],  # A
                             [1, 0, 0],  # B
                             [0, 1, 0],  # C
@@ -29,7 +29,7 @@ class ShapeGenerator():
 
     @staticmethod
     @jit(nopython=True)
-    def getCubeEdges():
+    def generateCuboidEdges():
         return numpy.array([[0, 1],   # A to B
                             [0, 2],   # A to C
                             [0, 3],   # A to D
@@ -45,7 +45,7 @@ class ShapeGenerator():
 
     @staticmethod
     @jit(nopython=True)
-    def getCubeTriangles():
+    def generateCuboidTriangles():
         return numpy.array([[0, 1, 4],   # A, B, E
                             [0, 1, 5],   # A, B, F
                             [0, 2, 4],   # A, C, E
@@ -63,15 +63,15 @@ class ShapeGenerator():
         # Creates an empty Shape3D object
         shape = shape_3d.Shape3D()
         # Initializes the vertex array as a unit cube
-        vertexArray = numpy.asarray(self.getCubeVertices(), dtype=config.SHAPE3D_VERTICES_NUMPY_DTYPE)
+        vertexArray = numpy.asarray(self.generateCuboidVertices(), dtype=config.SHAPE3D_VERTICES_NUMPY_DTYPE)
         # Scales the vertex array by (dimX, dimY, dimZ) via matrix multiplication
         vertexArray[:, 0] *= dimX
         vertexArray[:, 1] *= dimY
         vertexArray[:, 2] *= dimZ
         # Calls the set() methods for the Shape's vertices/edges/triangles
         shape.setVertices(vertexArray)
-        shape.setEdges(numpy.asarray(self.getCubeEdges(), dtype=config.SHAPE3D_EDGES_NUMPY_DTYPE))
-        shape.setTriangles(numpy.asarray(self.getCubeTriangles(), dtype=config.SHAPE3D_TRIANGLES_NUMPY_DTYPE))
+        shape.setEdges(numpy.asarray(self.generateCuboidEdges(), dtype=config.SHAPE3D_EDGES_NUMPY_DTYPE))
+        shape.setTriangles(numpy.asarray(self.generateCuboidTriangles(), dtype=config.SHAPE3D_TRIANGLES_NUMPY_DTYPE))
         shape.generateTriangleVertices()
         # Increments self.shapeCount and returns the new Shape3D object
         self.shapeCount += 1

@@ -13,3 +13,8 @@ SHAPE3D_EDGES_NUMPY_DTYPE = numpy.uint32
 #  - Values will always be zero or positive, so the type can be unsigned
 #  - uint8 will only support up to 256 vertices in a shape, whereas uint16 allows up to 65536
 SHAPE3D_TRIANGLES_NUMPY_DTYPE = numpy.uint32
+
+
+# NumPy Datatype for Elemental Rotation Matrices
+#  - Values are used in matrix multiplication and should match the vertex datatype for that reason
+GEOMETRY_ROTATION_NUMPY_DTYPE = SHAPE3D_VERTICES_NUMPY_DTYPE
