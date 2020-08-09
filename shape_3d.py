@@ -62,6 +62,7 @@ class Shape3D():
         # Invariant Checks (NOT YET IMPLEMENTED)
         #  - Must have already called self.setTriangles
         invariantFail = False
+        invariantFail = invariantFail or self.hasTriangleVertices
         if invariantFail:
             print("ERROR: Failed invariant checks in Shape3D.setTriangleVertices()")
             return False

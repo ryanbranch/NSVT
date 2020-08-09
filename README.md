@@ -17,4 +17,8 @@ NumPy Simulation and Visualization Toolkit
  * The [PyGame Documentation](https://www.pygame.org/docs)
  * Joey de Vries' [LearnOpenGL](https://learnopengl.com/) online book
  * The [PyOpenGL Documentation](http://pyopengl.sourceforge.net/documentation/index.html) on SourceForge
+ * Wikipedia articles:
+   * [Rotation Matrix](https://en.wikipedia.org/wiki/Rotation_matrix)
+     * [In three dimensions](https://en.wikipedia.org/wiki/Rotation_matrix#In_three_dimensions)
+     * [Rotation matrix from axis and angle](https://en.wikipedia.org/wiki/Rotation_matrix#Rotation_matrix_from_axis_and_angle)
  

@@ -76,7 +76,7 @@ class OpenGLApp():
 
         # Shapes
         self.shapes = []
-        for i in range(100):
+        for i in range(10):
             print("ONE ITERATION.")
             shapeX = random.randrange(5, 16) / 20
             shapeY = random.randrange(5, 16) / 20
@@ -90,7 +90,7 @@ class OpenGLApp():
             self.shapes.append(self.wrapper.shapeGen.generateCuboid(shapeX, shapeY, shapeZ))
             geo.translateVertices(self.shapes[-1].vertices, moveX, moveY, moveZ)
             #self.shapes[-1].vertices = geo.rotateVertices(self.shapes[-1].vertices, rotateX, rotateY, rotateZ)
-            #geo.rotateVertices(self.shapes[-1].vertices, rotateX, rotateY, rotateZ)
+            geo.rotateVertices(self.shapes[-1].vertices, rotateX, rotateY, rotateZ)
             geo.updateTriangleVertices(self.shapes[-1].vertices, self.shapes[-1].triangles, self.shapes[-1].triangleVertices)
 
 
@@ -106,7 +106,7 @@ class OpenGLApp():
         gluPerspective(25, (self.display_width / self.display_height), 0.1, 50.0)
         # Translate and rotate to initial position
         glTranslatef(-0.5, -0.5, -10.0)
-        glRotatef(20, 0, 0, 0)
+        #glRotatef(20, 0, 0, 0)
         # SHADER OPERATIONS
         # (placeholder)
         # VBO OPERATIONS
@@ -126,6 +126,20 @@ class OpenGLApp():
             for event in pygame.event.get():
                 if event.type == pygame.QUIT:
                     self.crashed = True
+                if event.type == pygame.KEYDOWN:
+                    if event.key == pygame.K_e:
+                        glTranslatef(0, 0, 1)
+                    if event.key == pygame.K_q:
+                        glTranslatef(0, 0, -1)
+                    if event.key == pygame.K_s:
+                        glTranslatef(0, 1, 0)
+                    if event.key == pygame.K_w:
+                        glTranslatef(0, -1, 0)
+                    if event.key == pygame.K_a:
+                        glTranslatef(1, 0, 0)
+                    if event.key == pygame.K_d:
+                        glTranslatef(-1, 0, 0)
+
 
             # These lines track the amount of time that has elapsed since the last self.after() call
             self.timeDelta = default_timer() - self.frameTime
@@ -141,10 +155,22 @@ class OpenGLApp():
         quit()
 
     def drawGraphicsOpenGL(self):
-        glRotatef(0.3, 1, 2, 3)  # 3-degree rotation around the unit vector
+        glRotatef(0.3, 1, 1, 1)  # 3-degree rotation around the unit vector
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)  # Clear the current display
 
         tempCounter = 0
+
+        # VBO OPERATIONS
+        self.allVertices = numpy.concatenate([shape.vertices for shape in self.shapes], 0)
+        self.allTriangleVertices = numpy.concatenate([shape.triangleVertices for shape in self.shapes], 0)
+        self.vbo = vbo.VBO(self.allVertices)
+        self.vbo2 = vbo.VBO(self.allTriangleVertices)
+
+        for shape in self.shapes:
+            randomAxis = (random.randrange(-100, 100), random.randrange(-100, 100), random.randrange(-100, 100))
+            randomAngle = random.randrange(-90, 91) / 10
+            #geo.rotateVerticesAxisAngle(shape.vertices, randomAxis[0], randomAxis[1], randomAxis[2], randomAngle)
+            geo.updateTriangleVertices(shape.vertices, shape.triangles, shape.triangleVertices)
 
         try:
             # VERTICES
@@ -157,7 +183,7 @@ class OpenGLApp():
                 self.vbo.unbind()
                 glDisableClientState(GL_VERTEX_ARRAY);
 
-            # EDGES
+            # TRIANGLES
             self.vbo2.bind()
             try:
                 glEnableClientState(GL_VERTEX_ARRAY);
