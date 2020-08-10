@@ -54,9 +54,9 @@ def getRotationMatrixY(theta):
         ], dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
     else:
         return numpy.array([
-            [math.nv.cos(theta),        0.,  math.nv.sin(theta)],
-            [0.,                        1.,                  0.],
-            [(-1 * math.nv.sin(theta)), 0.,  math.nv.cos(theta)]
+            [nv.cos(theta),        0.,  nv.sin(theta)],
+            [0.,                   1.,             0.],
+            [(-1 * nv.sin(theta)), 0.,  nv.cos(theta)]
         ], dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
 
 # REQUIRES:
@@ -71,9 +71,9 @@ def getRotationMatrixZ(theta):
         ], dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
     else:
         return numpy.array([
-            [math.nv.cos(theta), (-1. * math.nv.sin(theta)), 0.],
-            [math.nv.sin(theta), math.nv.cos(theta),         0.],
-            [0.,             0.,                             1.]
+            [nv.cos(theta), (-1. * nv.sin(theta)), 0.],
+            [nv.sin(theta), nv.cos(theta),         0.],
+            [0.,        0.,                        1.]
         ], dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
 
 # REQUIRES:
@@ -149,9 +149,16 @@ def rotateVertices(vertices, degreesX, degreesY, degreesZ):
     rMatX = getRotationMatrixX(math.radians(degreesX))
     rMatY = getRotationMatrixY(math.radians(degreesY))
     rMatZ = getRotationMatrixZ(math.radians(degreesZ))
-    rMat = numpy.matmul(rMatX, rMatY)
-    rMat = numpy.matmul(rMat, rMatZ)
-    verticesTransposed = numpy.matmul(rMat, verticesTransposed)
+
+
+    #rMat = numpy.matmul(rMatX, rMatY)
+    #rMat = numpy.matmul(rMat, rMatZ)
+    #verticesTransposed = numpy.matmul(rMat, verticesTransposed)
+    rMat = rMatX @ rMatY
+    rMat = rMat @ rMatZ
+    verticesTransposed = rMat @ verticesTransposed
+
+
     verticesTransposed = numpy.transpose(verticesTransposed)
     vertices[:] = verticesTransposed[:]
     return vertices
@@ -172,7 +179,8 @@ def rotateVerticesAxisAngle(vertices, axisX, axisY, axisZ, degrees):
     verticesTransposed = numpy.transpose(vertices)
     unitVec = getUnitVector3D(axisX, axisY, axisZ)
     rMat = getRotationMatrixAxisAngle(unitVec[0], unitVec[1], unitVec[2], math.radians(degrees))
-    verticesTransposed = numpy.matmul(rMat, verticesTransposed)
+    #verticesTransposed = numpy.matmul(rMat, verticesTransposed)
+    verticesTransposed = rMat @ verticesTransposed
     verticesTransposed = numpy.transpose(verticesTransposed)
     vertices[:] = verticesTransposed[:]
     return vertices

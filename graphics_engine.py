@@ -37,8 +37,8 @@ class GraphicsEngine():
         self.wrapper = wrapper_
 
         self.saveCount = 0
-        self.pilImageScaleX = 10.0
-        self.pilImageScaleY = 10.0
+        self.pilImageScaleX = 1.0
+        self.pilImageScaleY = 1.0
 
         self.numpyImage = numpy.ones(shape=(GraphicsEngine.DEFAULT_GRAPHICS_HEIGHT,
                                             GraphicsEngine.DEFAULT_GRAPHICS_WIDTH,
