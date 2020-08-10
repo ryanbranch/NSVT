@@ -42,6 +42,10 @@ class PygameGuiApp():
         self.crashed = False
         self.pgSurface = pygame.pixelcopy.make_surface(self.wrapper.gEngines[-1].numpyImage)
 
+        # Run the Pygame GUI App
+        self.runApp()
+
+    def runApp(self):
         fpsVals = []
 
         while not self.crashed:
@@ -65,7 +69,6 @@ class PygameGuiApp():
         pygame.quit()
         print(fpsVals)
         quit()
-
 
     def advance(self):
         # Updates the graphics

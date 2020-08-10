@@ -23,3 +23,10 @@ GEOMETRY_ROTATION_NUMPY_DTYPE = SHAPE3D_VERTICES_NUMPY_DTYPE
 DEFAULT_GUI_WIDTH = 1024
 DEFAULT_GUI_HEIGHT = 768
 DEFAULT_GUI_FRAMERATE = 15
+# GUI TYPE SELECTION
+# If True, uses the pyopengl_app.py App
+# If False, defers to APP_TYPE_PYGAME
+APP_TYPE_3D = False
+# If True, uses the pygame_gui_app.py App
+# If False, uses the tkinter_gui_app.py App
+APP_TYPE_PYGAME = True

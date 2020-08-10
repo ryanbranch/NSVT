@@ -12,6 +12,7 @@ from OpenGL.arrays import vbo
 
 # Local Imports
 import nsvt_geometry as geo
+import nsvt_config as config
 
 
 class PyopenglApp():
@@ -23,8 +24,8 @@ class PyopenglApp():
         # Initialization method for PyGame library
         pygame.init()
         # PyGame Parameters
-        self.display_width = self.wrapper.appInfo.width
-        self.display_height = self.wrapper.appInfo.height
+        self.display_width = config.DEFAULT_GUI_WIDTH
+        self.display_height = config.DEFAULT_GUI_HEIGHT
         self.gameDisplay = pygame.display.set_mode((self.display_width, self.display_height),
                                                    pygame.OPENGL | pygame.DOUBLEBUF | pygame.HWSURFACE)
         pygame.display.set_caption('OpenGL App Test')

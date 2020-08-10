@@ -79,7 +79,6 @@ class TkinterGuiApp(tkinter.Tk):
             self.computeNextFrame()
 
 
-
     def defineGraphics(self):
         # Refresh the values of the PIL Image
         self.wrapper.gEngines[self.gIndex].refreshPilImage()
@@ -110,6 +109,7 @@ class TkinterGuiApp(tkinter.Tk):
 
         self.fpsTkTextLabel = tkinter.Label(self.graphicsTkFrame, text=("FPS: " + str(self.currentFPS)))
         self.fpsTkTextLabel.grid(row=0, column=0, sticky="nw", ipadx=0, ipady=0)
+
 
     def computeNextFrame(self):
         # Compute a new frame to prepare for future display
