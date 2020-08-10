@@ -29,7 +29,6 @@ import pygame
 # Local Imports
 import tkinter_gui_app
 import pygame_gui_app
-import user_input_handler
 import graphics_engine
 import pyopengl_app
 import shape_generator

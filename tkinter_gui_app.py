@@ -7,7 +7,7 @@ from timeit import default_timer
 from PIL import ImageTk
 
 # Local Imports
-import user_input_handler
+import tkinter_gui_user_input
 import nsvt_config as config
 
 class TkinterGuiApp(tkinter.Tk):
@@ -22,8 +22,8 @@ class TkinterGuiApp(tkinter.Tk):
         # References to external objects
         self.wrapper = wrapper_
 
-        # UserInputHandler instance
-        self.uih = user_input_handler.UserInputHandler(self.wrapper, self)
+        # TkinterGuiUserInput instance
+        self.userInput = tkinter_gui_user_input.TkinterGuiUserInput(self.wrapper, self)
         # App Parameters
         self.msPerFrame = int(round(1000 / config.DEFAULT_GUI_FRAMERATE))
         self.animating = False
@@ -37,11 +37,11 @@ class TkinterGuiApp(tkinter.Tk):
         self.grid_columnconfigure(0, weight=1)
 
         # USER INPUT EVENT CONTROL
-        self.bind("<Button-1>", self.uih.handleMouseClick)
-        self.bind("<Return>", self.uih.handleKeyEnter)
-        self.bind("<space>", self.uih.handleKeySpace)
-        self.bind("c", self.uih.handleKeyC)
-        self.bind("d", self.uih.handleKeyD)
+        self.bind("<Button-1>", self.userInput.handleMouseClick)
+        self.bind("<Return>", self.userInput.handleKeyEnter)
+        self.bind("<space>", self.userInput.handleKeySpace)
+        self.bind("c", self.userInput.handleKeyC)
+        self.bind("d", self.userInput.handleKeyD)
 
         # MEMBER FUNCTION CALLS
         self.defineGraphics()

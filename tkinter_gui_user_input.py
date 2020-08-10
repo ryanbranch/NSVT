@@ -7,7 +7,7 @@
 # Local Imports
 
 
-class UserInputHandler():
+class TkinterGuiUserInput():
 
     def __init__(self, wrapper_, app_):
 
