@@ -4,11 +4,12 @@
 # Library Imports
 import math
 import numpy
-from numba import jit
+from numba import double, jit
 from numba.extending import overload
 
 # Local Imports
 import nsvt_config as config
+import numba_vectorized as nv
 
 # REQUIRES:
 #  - vector is a 1-dimensional array of scalar values
@@ -26,55 +27,71 @@ def getUnitVector3D(vectorX, vectorY, vectorZ):
 
 # REQUIRES:
 #  - theta is an angle in radians
-#@jit(nopython=True)
+@jit(nopython=True)
 def getRotationMatrixX(theta):
     if theta == 0:
-        return numpy.identity(3, dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
+        return numpy.asarray([
+            [1., 0., 0.],
+            [0., 1., 0.],
+            [0., 0., 1.]
+        ], dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
     else:
-        return numpy.array([
-            [1.,              0.,                      0.],
-            [0., math.cos(theta), (-1. * math.sin(theta))],
-            [0., math.sin(theta),         math.cos(theta)]
+        return numpy.asarray([
+            [1.,            0.,                     0.],
+            [0., nv.cos(theta),   (-1 * nv.sin(theta))],
+            [0., nv.sin(theta),          nv.cos(theta)]
         ], dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
 
 # REQUIRES:
 #  - theta is an angle in radians
-#@jit(nopython=True)
+@jit(nopython=True)
 def getRotationMatrixY(theta):
     if theta == 0:
-        return numpy.identity(3, dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
+        return numpy.asarray([
+            [1., 0., 0.],
+            [0., 1., 0.],
+            [0., 0., 1.]
+        ], dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
     else:
         return numpy.array([
-            [math.cos(theta),        0, math.sin(theta)],
-            [0,                      1,               0],
-            [(-1 * math.sin(theta)), 0, math.cos(theta)]
+            [math.nv.cos(theta),        0.,  math.nv.sin(theta)],
+            [0.,                        1.,                  0.],
+            [(-1 * math.nv.sin(theta)), 0.,  math.nv.cos(theta)]
         ], dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
 
 # REQUIRES:
 #  - theta is an angle in radians
-#@jit(nopython=True)
+@jit(nopython=True)
 def getRotationMatrixZ(theta):
     if theta == 0:
-        return numpy.identity(3, dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
+        return numpy.asarray([
+            [1., 0., 0.],
+            [0., 1., 0.],
+            [0., 0., 1.]
+        ], dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
     else:
         return numpy.array([
-            [math.cos(theta), (-1 * math.sin(theta)), 0],
-            [math.sin(theta), math.cos(theta),        0],
-            [0,               0,                      1]
+            [math.nv.cos(theta), (-1. * math.nv.sin(theta)), 0.],
+            [math.nv.sin(theta), math.nv.cos(theta),         0.],
+            [0.,             0.,                             1.]
         ], dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
 
 # REQUIRES:
 #  - (uX, uY, uZ) forms a unit vector of length 1
 #  - theta is an angle in radians
-#@jit(nopython=True)
+@jit(nopython=True)
 def getRotationMatrixAxisAngle(uX, uY, uZ, theta):
     if theta == 0:
-        return numpy.identity(3, dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
+        return numpy.asarray([
+            [1., 0., 0.],
+            [0., 1., 0.],
+            [0., 0., 1.]
+        ], dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
     else:
         return numpy.array([
-            [(math.cos(theta) + (uX * uX * (1 - math.cos(theta)))),        ((uX * uY * (1 - math.cos(theta))) - (uZ * math.sin(theta))),  ((uX * uZ * (1 - math.cos(theta))) + (uY * math.sin(theta)))],
-            [((uX * uY * (1 - math.cos(theta))) + (uZ * math.sin(theta))), (math.cos(theta) + (uY * uY * (1 - math.cos(theta)))),         ((uY * uZ * (1 - math.cos(theta))) - (uX * math.sin(theta)))],
-            [((uX * uZ * (1 - math.cos(theta))) - (uY * math.sin(theta))), ((uY * uZ * (1 - math.cos(theta))) + (uX * math.sin(theta))),         (math.cos(theta) + (uZ * uZ * (1 - math.cos(theta))))]
+            [(nv.cos(theta) + (uX * uX * (1. - nv.cos(theta)))),        ((uX * uY * (1. - nv.cos(theta))) - (uZ * nv.sin(theta))),  ((uX * uZ * (1. - nv.cos(theta))) + (uY * nv.sin(theta)))],
+            [((uX * uY * (1. - nv.cos(theta))) + (uZ * nv.sin(theta))), (nv.cos(theta) + (uY * uY * (1. - nv.cos(theta)))),         ((uY * uZ * (1. - nv.cos(theta))) - (uX * nv.sin(theta)))],
+            [((uX * uZ * (1. - nv.cos(theta))) - (uY * nv.sin(theta))), ((uY * uZ * (1. - nv.cos(theta))) + (uX * nv.sin(theta))),         (nv.cos(theta) + (uZ * uZ * (1. - nv.cos(theta))))]
         ], dtype=config.GEOMETRY_ROTATION_NUMPY_DTYPE)
 
 

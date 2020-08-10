@@ -76,11 +76,11 @@ class OpenGLApp():
 
         # Shapes
         self.shapes = []
-        for i in range(10):
+        for i in range(100):
             print("ONE ITERATION.")
-            shapeX = random.randrange(5, 16) / 20
-            shapeY = random.randrange(5, 16) / 20
-            shapeZ = random.randrange(5, 16) / 20
+            shapeX = random.randrange(5, 16) / 200
+            shapeY = random.randrange(5, 16) / 200
+            shapeZ = random.randrange(5, 16) / 200
             moveX = random.randrange(-50, 50) / 10
             moveY = random.randrange(-50, 50) / 10
             moveZ = random.randrange(-50, 50) / 10
@@ -155,7 +155,7 @@ class OpenGLApp():
         quit()
 
     def drawGraphicsOpenGL(self):
-        glRotatef(0.3, 1, 1, 1)  # 3-degree rotation around the unit vector
+        #glRotatef(0.3, 1, 1, 1)  # 3-degree rotation around the unit vector
         glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT)  # Clear the current display
 
         tempCounter = 0
@@ -169,7 +169,7 @@ class OpenGLApp():
         for shape in self.shapes:
             randomAxis = (random.randrange(-100, 100), random.randrange(-100, 100), random.randrange(-100, 100))
             randomAngle = random.randrange(-90, 91) / 10
-            #geo.rotateVerticesAxisAngle(shape.vertices, randomAxis[0], randomAxis[1], randomAxis[2], randomAngle)
+            geo.rotateVerticesAxisAngle(shape.vertices, randomAxis[0], randomAxis[1], randomAxis[2], randomAngle)
             geo.updateTriangleVertices(shape.vertices, shape.triangles, shape.triangleVertices)
 
         try:

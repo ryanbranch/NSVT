@@ -9,7 +9,7 @@ NumPy Simulation and Visualization Toolkit
 * Numba
 
 # Works Cited
- * Sentdex Tutorials [pythonprogramming.net](https://pythonprogramming.net/)
+ * Sentdex Tutorials from [pythonprogramming.net](https://pythonprogramming.net/)
    * [OpenGL with PyOpenGL Introduction](https://pythonprogramming.net/opengl-pyopengl-python-pygame-tutorial/) 
      * Used in initial development of the OpenGLApp test class, beginning 2020/08/05
    * [Displaying Images with PyGame](https://pythonprogramming.net/displaying-images-pygame/) by Sentdex from [pythonprogramming.net](https://pythonprogramming.net/)
@@ -17,6 +17,7 @@ NumPy Simulation and Visualization Toolkit
  * The [PyGame Documentation](https://www.pygame.org/docs)
  * Joey de Vries' [LearnOpenGL](https://learnopengl.com/) online book
  * The [PyOpenGL Documentation](http://pyopengl.sourceforge.net/documentation/index.html) on SourceForge
+ * The [Numba 0.15.1 Examples](http://numba.pydata.org/numba-doc/0.15.1/examples.html)
  * Wikipedia articles:
    * [Rotation Matrix](https://en.wikipedia.org/wiki/Rotation_matrix)
      * [In three dimensions](https://en.wikipedia.org/wiki/Rotation_matrix#In_three_dimensions)
