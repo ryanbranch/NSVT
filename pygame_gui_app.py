@@ -6,7 +6,7 @@ import pygame
 from timeit import default_timer
 
 # Local Imports
-
+import nsvt_config as config
 
 class PygameGuiApp():
 
@@ -31,8 +31,8 @@ class PygameGuiApp():
 
 
         # PyGame Parameters
-        self.display_width = 1000
-        self.display_height = 1000
+        self.display_width = config.DEFAULT_GUI_WIDTH
+        self.display_height = config.DEFAULT_GUI_HEIGHT
         self.gameDisplay = pygame.display.set_mode((self.display_width, self.display_height))
         pygame.display.set_caption('PyGame App Test')
 

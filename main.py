@@ -11,6 +11,7 @@ import pygame_gui_app
 import pyopengl_app
 import graphics_engine
 import shape_generator
+import point_cloud
 import nsvt_config as config
 
 
@@ -41,16 +42,21 @@ class Wrapper():
         self.gEngines.append(graphics_engine.GraphicsEngine(self))
         self.pEngines.append(PhysicsEngine(self))
 
+        # Create a PointCloudGenerator instance
+        self.pcGen = point_cloud.PointCloudGenerator(self)
+
+
         # POST-SETUP ACTIONS
-        # Create and run the App instance
-        if config.APP_TYPE_3D:
-            self.app = pyopengl_app.PyopenglApp(self)
-        else:
-            if config.APP_TYPE_PYGAME:
-                self.app = pygame_gui_app.PygameGuiApp(self)
+        if config.RUN_GUI_APP:
+            # Create and run the App instance
+            if config.APP_TYPE_3D:
+                self.app = pyopengl_app.PyopenglApp(self)
             else:
-                self.app = tkinter_gui_app.TkinterGuiApp(self)
-                self.app.mainloop()
+                if config.APP_TYPE_PYGAME:
+                    self.app = pygame_gui_app.PygameGuiApp(self)
+                else:
+                    self.app = tkinter_gui_app.TkinterGuiApp(self)
+                    self.app.mainloop()
 
 
 def main():

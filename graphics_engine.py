@@ -10,25 +10,13 @@ from pathlib import Path
 import random
 
 # Local Imports
-
+import nsvt_config as config
 
 class GraphicsEngine():
     # C L A S S      A T T R I B U T E S
-    DEFAULT_GRAPHICS_WIDTH = 1000
-    DEFAULT_GRAPHICS_HEIGHT = 1000
-    DEFAULT_NUMPY_DATATYPE = numpy.uint8
-    NUM_COLOR_CHANNELS = 3
-    OUTPUT_DIRECTORY = "output/"
-    DEFAULT_SAVE_NAME_DIGITS = 6
-    DEFAULT_SAVE_NAME_SUFFIX = ""
-    DEFAULT_SAVE_FORMAT = ".png"
-    FRAMES_FOLDER = "frames/"
-    DEFAULT_FRAME_NAME_DIGITS = 6
-    DEFAULT_FRAME_NAME_SUFFIX = ""
-    DEFAULT_FRAME_FORMAT = ".png"
+
     # NUMPY IMAGE (META)METADATA
     # PIL METADATA
-    DEFAULT_PIL_RESIZE_RESAMPLE_MODE = PIL.Image.NEAREST
 
     def __init__(self, wrapper_):
 
@@ -38,10 +26,10 @@ class GraphicsEngine():
         self.pilImageScaleX = 1.0
         self.pilImageScaleY = 1.0
 
-        self.numpyImage = numpy.ones(shape=(GraphicsEngine.DEFAULT_GRAPHICS_HEIGHT,
-                                            GraphicsEngine.DEFAULT_GRAPHICS_WIDTH,
-                                            GraphicsEngine.NUM_COLOR_CHANNELS),
-                                     dtype=GraphicsEngine.DEFAULT_NUMPY_DATATYPE
+        self.numpyImage = numpy.ones(shape=(config.DEFAULT_GUI_WIDTH,
+                                            config.DEFAULT_GUI_HEIGHT,
+                                            config.GRAPHICS_IMAGE_NUMPY_ZDIM),
+                                     dtype=config.GRAPHICS_IMAGE_NUMPY_DTYPE
                                      ) * 255
         self.pilImage: Image
         # Sets the value of self.pilImage
@@ -56,8 +44,8 @@ class GraphicsEngine():
     # Creates the folder(s) in which outputs will be saved
     def makeDirectories(self):
         cwDir = Path.cwd()
-        dirs = [cwDir / GraphicsEngine.OUTPUT_DIRECTORY,  # MAIN OUTPUT DIRECTORY
-                cwDir / GraphicsEngine.OUTPUT_DIRECTORY / GraphicsEngine.FRAMES_FOLDER]  # FRAMES DIRECTORY
+        dirs = [cwDir / config.GRAPHICS_OUTPUT_DIRECTORY,  # MAIN OUTPUT DIRECTORY
+                cwDir / config.GRAPHICS_OUTPUT_DIRECTORY / config.GRAPHICS_FRAMES_FOLDER]  # FRAMES DIRECTORY
         for newDir in dirs:
             if not newDir.is_dir():
                 newDir.mkdir()
@@ -66,24 +54,30 @@ class GraphicsEngine():
     #       unless it is clear that self.numpyImage has not been modified since the last refreshPilImage() call.
     def refreshPilImage(self):
         if (self.pilImageScaleX == 1.0 and self.pilImageScaleY == 1.0):
-            self.pilImage = Image.fromarray(self.numpyImage[:, :, 0:GraphicsEngine.NUM_COLOR_CHANNELS].astype("uint8"))
+            self.pilImage = Image.fromarray(self.numpyImage[:, :, 0:config.GRAPHICS_IMAGE_NUMPY_ZDIM].astype("uint8"))
         else:
-            self.pilImage = Image.fromarray(self.numpyImage[:, :, 0:GraphicsEngine.NUM_COLOR_CHANNELS].astype("uint8")).resize(
+            self.pilImage = Image.fromarray(self.numpyImage[:, :, 0:config.GRAPHICS_IMAGE_NUMPY_ZDIM].astype("uint8")).resize(
                 (int(self.numpyImage.shape[1] * self.pilImageScaleX),
                  int(self.numpyImage.shape[0] * self.pilImageScaleY)),
-                GraphicsEngine.DEFAULT_PIL_RESIZE_RESAMPLE_MODE)
+                config.PIL_DEFAULT_RESIZE_RESAMPLE_MODE)
 
 
-    def getSavePath(self, fileIndex, digits=DEFAULT_SAVE_NAME_DIGITS, suffix=DEFAULT_SAVE_NAME_SUFFIX,
-                    format=DEFAULT_SAVE_FORMAT):
-        return GraphicsEngine.OUTPUT_DIRECTORY + str(fileIndex).zfill(digits) + suffix + format
+    def getSavePath(self,
+                    fileIndex,
+                    digits=config.GRAPHICS_DEFAULT_SAVE_NAME_DIGITS,
+                    suffix=config.GRAPHICS_DEFAULT_SAVE_NAME_SUFFIX,
+                    format=config.GRAPHICS_DEFAULT_SAVE_FORMAT):
+        return config.GRAPHICS_OUTPUT_DIRECTORY + str(fileIndex).zfill(digits) + suffix + format
 
-    def getFramePath(self, fileIndex, digits=DEFAULT_FRAME_NAME_DIGITS, suffix=DEFAULT_FRAME_NAME_SUFFIX,
-                     format=DEFAULT_FRAME_FORMAT):
-        return GraphicsEngine.OUTPUT_DIRECTORY + GraphicsEngine.FRAMES_FOLDER + str(fileIndex).zfill(digits) + suffix + format
+    def getFramePath(self,
+                     fileIndex,
+                     digits=config.GRAPHICS_DEFAULT_FRAME_NAME_DIGITS,
+                     suffix=config.GRAPHICS_DEFAULT_FRAME_NAME_SUFFIX,
+                     format=config.GRAPHICS_DEFAULT_FRAME_FORMAT):
+        return config.GRAPHICS_OUTPUT_DIRECTORY + config.GRAPHICS_FRAMES_FOLDER + str(fileIndex).zfill(digits) + suffix + format
 
     def saveImage(self, path):
-        Image.fromarray(self.numpyImage[:,:,0:GraphicsEngine.NUM_COLOR_CHANNELS].astype("uint8")).save(path)
+        Image.fromarray(self.numpyImage[:,:,0:config.GRAPHICS_IMAGE_NUMPY_ZDIM].astype("uint8")).save(path)
 
     def randomizeRandomPixel(self):
         self.numpyImage[random.randrange(self.numpyImage.shape[0]),
