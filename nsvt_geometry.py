@@ -118,7 +118,7 @@ def translateVertices(vertices, moveX, moveY, moveZ):
     # Invariant Checks (NOT YET IMPLEMENTED)
     invariantFail = False
     if invariantFail:
-        print("ERROR: Failed invariant checks in nsvt_geometry.translate()")
+        print("ERROR: Failed invariant checks in nsvt_geometry.translateVertices()")
         return False
 
     for vertex in vertices:
@@ -142,7 +142,7 @@ def rotateVertices(vertices, degreesX, degreesY, degreesZ):
     # Invariant Checks (NOT YET IMPLEMENTED)
     invariantFail = False
     if invariantFail:
-        print("ERROR: Failed invariant checks in nsvt_geometry.translate()")
+        print("ERROR: Failed invariant checks in nsvt_geometry.rotateVertices()")
         return False
 
     verticesTransposed = numpy.transpose(vertices)
@@ -173,7 +173,7 @@ def rotateVerticesAxisAngle(vertices, axisX, axisY, axisZ, degrees):
     # Invariant Checks (NOT YET IMPLEMENTED)
     invariantFail = False
     if invariantFail:
-        print("ERROR: Failed invariant checks in nsvt_geometry.translate()")
+        print("ERROR: Failed invariant checks in nsvt_geometry.rotateVerticesAxisAngle()")
         return False
 
     verticesTransposed = numpy.transpose(vertices)
