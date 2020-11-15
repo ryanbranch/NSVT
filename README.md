@@ -1,5 +1,5 @@
 # NSVT
-NumPy Simulation and Visualization Toolkit
+Numba Simulation and Visualization Toolkit
 
 ## Required Library Installations:
 * PyOpenGL
